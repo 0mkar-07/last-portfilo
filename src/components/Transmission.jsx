@@ -48,7 +48,7 @@ export default function Transmission() {
     >
       <div className="max-w-5xl w-full">
         {/* Section Header */}
-        <div className="mb-8 border-b border-[#FFB000]/25 pb-4">
+        <div className="mb-10 border-b border-[#FFB000]/25 pb-4">
           <div className="flex items-center space-x-2 font-mono text-xs text-[#8a8a8a] mb-2">
             <span className="text-[#FFB000]">MODULE://{transmissionHeader.moduleIndex}</span>
             <span>[{transmissionHeader.tag}]</span>

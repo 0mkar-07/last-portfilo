@@ -30,7 +30,7 @@ export default function Archives() {
     >
       <div className="max-w-6xl w-full">
         {/* Section Header */}
-        <div className="mb-12 border-b border-[#FFB000]/25 pb-4">
+        <div className="mb-10 border-b border-[#FFB000]/25 pb-4">
           <div className="flex items-center space-x-2 font-mono text-xs text-[#8a8a8a] mb-2">
             <span className="text-[#FFB000]">MODULE://{archivesHeader.moduleIndex}</span>
             <span>[{archivesHeader.tag}]</span>

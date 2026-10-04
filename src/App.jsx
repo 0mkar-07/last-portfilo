@@ -1,3 +1,4 @@
+import BootSequence from './components/BootSequence'
 import HudFrame from './components/HudFrame'
 import Identity from './components/Identity'
 import SurvivorLog from './components/SurvivorLog'
@@ -8,6 +9,9 @@ import Transmission from './components/Transmission'
 export default function App() {
   return (
     <>
+      {/* First-load Interactive Boot Sequence */}
+      <BootSequence />
+
       {/* Subtle CRT Scanlines & Vignette Overlays */}
       <div className="crt-scanlines" aria-hidden="true" />
       <div className="crt-vignette" aria-hidden="true" />
