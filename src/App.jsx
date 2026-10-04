@@ -1,7 +1,7 @@
 import HudFrame from './components/HudFrame'
+import Identity from './components/Identity'
 
-const SECTIONS = [
-  { id: 'identity', name: 'IDENTITY', index: '01', desc: 'Survivor Profile & Telemetry Node' },
+const REMAINING_SECTIONS = [
   { id: 'survivor-log', name: 'SURVIVOR_LOG', index: '02', desc: 'Chronological Career & Mission Timeline' },
   { id: 'arsenal', name: 'ARSENAL', index: '03', desc: 'Technical Weaponry & Capabilities' },
   { id: 'archives', name: 'ARCHIVES', index: '04', desc: 'Salvaged Repositories & Artifacts' },
@@ -17,7 +17,11 @@ export default function App() {
 
       {/* Main HUD Frame Shell */}
       <HudFrame>
-        {SECTIONS.map((section) => (
+        {/* Module 01: IDENTITY */}
+        <Identity />
+
+        {/* Modules 02 - 05 Placeholders */}
+        {REMAINING_SECTIONS.map((section) => (
           <section
             key={section.id}
             id={section.id}
