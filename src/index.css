@@ -1,1 +1,128 @@
 @import "tailwindcss";
+
+@theme {
+  --color-terminal-bg: #0a0a0a;
+  --color-terminal-panel: #111111;
+  --color-terminal-border: rgba(255, 176, 0, 0.25);
+  --color-terminal-text: #e5e5e5;
+  --color-terminal-muted: #8a8a8a;
+  --color-amber-primary: #FFB000;
+  --color-danger-red: #ff3333;
+
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  --font-sans: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+:root {
+  color-scheme: dark;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #0a0a0a;
+  color: #e5e5e5;
+  font-family: var(--font-sans, "Inter", sans-serif);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* CRT Scanline Overlay */
+.crt-scanlines {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9999;
+  background: linear-gradient(
+    rgba(18, 16, 16, 0) 50%, 
+    rgba(0, 0, 0, 0.25) 50%
+  );
+  background-size: 100% 4px;
+  opacity: 0.65;
+}
+
+.crt-scanlines::before {
+  content: " ";
+  display: block;
+  position: absolute;
+  top: 0; left: 0; bottom: 0; right: 0;
+  background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.2) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.02), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.02));
+  z-index: 2;
+  background-size: 100% 3px, 6px 100%;
+  pointer-events: none;
+}
+
+/* Subtle Vignette for CRT feel */
+.crt-vignette {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9998;
+  background: radial-gradient(circle at center, transparent 65%, rgba(0, 0, 0, 0.6) 100%);
+}
+
+/* Blinking Cursor */
+.cursor-blink {
+  display: inline-block;
+  animation: cursor-blink 1.06s steps(1) infinite;
+}
+
+@keyframes cursor-blink {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
+
+/* Glitch on hover */
+.glitch-hover {
+  display: inline-block;
+  transition: transform 0.15s ease, text-shadow 0.15s ease;
+  position: relative;
+}
+
+.glitch-hover:hover {
+  text-shadow: 2px 0 rgba(255, 176, 0, 0.7), -2px 0 rgba(255, 51, 51, 0.6);
+  transform: translateX(1px);
+}
+
+/* Soft Amber Glow */
+.amber-glow {
+  box-shadow: 0 0 15px rgba(255, 176, 0, 0.25), 0 0 5px rgba(255, 176, 0, 0.4);
+}
+
+.amber-glow-text {
+  text-shadow: 0 0 8px rgba(255, 176, 0, 0.6), 0 0 16px rgba(255, 176, 0, 0.3);
+}
+
+.amber-glow-border {
+  border-color: rgba(255, 176, 0, 0.4);
+  box-shadow: 0 0 12px rgba(255, 176, 0, 0.18), inset 0 0 8px rgba(255, 176, 0, 0.08);
+}
+
+/* Reduced Motion Safety */
+@media (prefers-reduced-motion: reduce) {
+  .cursor-blink {
+    animation: none !important;
+    opacity: 1 !important;
+  }
+
+  .glitch-hover:hover {
+    transform: none !important;
+    text-shadow: none !important;
+  }
+
+  .crt-scanlines,
+  .crt-vignette {
+    opacity: 0.2 !important;
+  }
+
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
