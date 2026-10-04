@@ -1,31 +1,16 @@
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { identityData } from '../data/identity'
-
-function usePrefersReducedMotion() {
-  const [matches, setMatches] = useState(false)
-  useEffect(() => {
-    if (typeof window === 'undefined') return
-    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)')
-    setMatches(mediaQuery.matches)
-    const listener = (e) => setMatches(e.matches)
-    mediaQuery.addEventListener('change', listener)
-    return () => mediaQuery.removeEventListener('change', listener)
-  }, [])
-  return matches
-}
+import { usePrefersReducedMotion } from '../utils/useReducedMotion'
 
 export default function Identity() {
   const shouldReduceMotion = usePrefersReducedMotion()
-  const [displayedName, setDisplayedName] = useState(
+  const [displayedName, setDisplayedName] = useState(() =>
     shouldReduceMotion ? identityData.name : ''
   )
 
   useEffect(() => {
-    if (shouldReduceMotion) {
-      setDisplayedName(identityData.name)
-      return
-    }
+    if (shouldReduceMotion) return
 
     let currentIndex = 0
     const fullName = identityData.name
@@ -72,7 +57,7 @@ export default function Identity() {
   return (
     <section
       id="identity"
-      className="min-h-screen w-full flex items-center justify-center py-20 px-4 sm:px-6 lg:px-8 relative bg-[#0a0a0a] border-b border-[#FFB000]/15"
+      className="min-h-screen w-full flex items-center justify-center py-20 px-4 sm:px-6 lg:px-8 relative bg-[#0a0a0a] border-b border-[#FFB000]/15 scroll-mt-16 sm:scroll-mt-24"
     >
       <div className="max-w-5xl w-full">
         <motion.div
@@ -84,7 +69,7 @@ export default function Identity() {
           {/* Header Tag & Classification */}
           <motion.div
             variants={itemVariants}
-            className="flex flex-wrap items-center justify-between gap-2 border-b border-[#FFB000]/20 pb-3 text-xs font-mono text-[#8a8a8a]"
+            className="flex flex-wrap items-center justify-between gap-2 border-b border-[#FFB000]/20 pb-3 text-xs font-mono text-[#a3a3a3]"
           >
             <div className="flex items-center space-x-2">
               <span className="text-[#FFB000]">MODULE://01</span>
@@ -105,28 +90,28 @@ export default function Identity() {
                 <span className="text-xs font-mono tracking-widest text-[#FFB000] uppercase block">
                   // SURVIVOR DESIGNATION
                 </span>
-                <h1 className="text-3xl sm:text-4xl md:text-5xl font-mono font-bold text-[#e5e5e5] tracking-tight leading-none min-h-[1.2em] flex items-center flex-wrap">
+                <h1 className="text-2xl sm:text-4xl md:text-5xl font-mono font-bold text-[#e5e5e5] tracking-tight leading-tight min-h-[1.2em] flex items-center flex-wrap break-words">
                   <span>{displayedName}</span>
                   <span className="text-[#FFB000] cursor-blink ml-1">_</span>
                 </h1>
                 <p className="font-mono text-base sm:text-lg text-[#FFB000] font-medium tracking-wide">
                   {identityData.role}
                 </p>
-                <p className="font-mono text-xs sm:text-sm text-[#8a8a8a] italic">
+                <p className="font-mono text-xs sm:text-sm text-[#a3a3a3] italic">
                   "{identityData.tagline}"
                 </p>
               </motion.div>
 
               {/* Intro paragraph in Inter */}
               <motion.div variants={itemVariants}>
-                <p className="font-sans text-sm sm:text-base text-[#e5e5e5]/90 leading-relaxed max-w-xl">
+                <p className="font-sans text-sm sm:text-base text-[#e5e5e5] leading-relaxed max-w-xl">
                   {identityData.intro}
                 </p>
               </motion.div>
 
               {/* Interests as glitch tags */}
               <motion.div variants={itemVariants} className="space-y-2">
-                <span className="text-xs font-mono text-[#8a8a8a] uppercase block">
+                <span className="text-xs font-mono text-[#a3a3a3] uppercase block">
                   // CORE DIRECTIVES & DOMAINS:
                 </span>
                 <div className="flex flex-wrap gap-2">
@@ -177,18 +162,18 @@ export default function Identity() {
                 <span className="text-[#FFB000] font-bold tracking-wider">
                   DOSSIER // DATA_CARD
                 </span>
-                <span className="text-[#8a8a8a] text-[10px]">SEC_ID_VERIFIED</span>
+                <span className="text-[#a3a3a3] text-[10px]">SEC_ID_VERIFIED</span>
               </div>
 
               {/* Status fields table */}
               <div className="space-y-3 font-mono text-xs">
                 <div className="flex items-center justify-between p-2 rounded bg-[#0a0a0a]/60 border border-[#FFB000]/15">
-                  <span className="text-[#8a8a8a]">ID:</span>
+                  <span className="text-[#a3a3a3]">ID:</span>
                   <span className="text-[#FFB000] font-semibold">{identityData.status.id}</span>
                 </div>
 
                 <div className="flex items-center justify-between p-2 rounded bg-[#0a0a0a]/60 border border-[#FFB000]/15">
-                  <span className="text-[#8a8a8a]">STATUS:</span>
+                  <span className="text-[#a3a3a3]">STATUS:</span>
                   <span className="flex items-center space-x-1.5 text-[#e5e5e5] font-semibold">
                     <span className="w-2 h-2 rounded-full bg-[#FFB000] animate-pulse" />
                     <span>{identityData.status.status}</span>
@@ -196,18 +181,18 @@ export default function Identity() {
                 </div>
 
                 <div className="flex items-center justify-between p-2 rounded bg-[#0a0a0a]/60 border border-[#FFB000]/15">
-                  <span className="text-[#8a8a8a]">CLEARANCE:</span>
+                  <span className="text-[#a3a3a3]">CLEARANCE:</span>
                   <span className="text-[#e5e5e5] font-semibold">{identityData.status.clearance}</span>
                 </div>
 
                 <div className="flex items-center justify-between p-2 rounded bg-[#0a0a0a]/60 border border-[#FFB000]/15">
-                  <span className="text-[#8a8a8a]">LOCATION:</span>
+                  <span className="text-[#a3a3a3]">LOCATION:</span>
                   <span className="text-[#FFB000] font-semibold text-right">{identityData.status.location}</span>
                 </div>
               </div>
 
               {/* Dossier footer badge */}
-              <div className="mt-5 pt-3 border-t border-[#FFB000]/15 flex items-center justify-between font-mono text-[10px] text-[#8a8a8a]">
+              <div className="mt-5 pt-3 border-t border-[#FFB000]/15 flex items-center justify-between font-mono text-[10px] text-[#a3a3a3]">
                 <span>BIOMETRIC_AUTH: VALID</span>
                 <span className="text-[#FFB000]/80">ENC_SHA256</span>
               </div>

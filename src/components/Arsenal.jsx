@@ -1,19 +1,6 @@
-import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { skillCategories, arsenalHeader } from '../data/skills'
-
-function usePrefersReducedMotion() {
-  const [matches, setMatches] = useState(false)
-  useEffect(() => {
-    if (typeof window === 'undefined') return
-    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)')
-    setMatches(mediaQuery.matches)
-    const listener = (e) => setMatches(e.matches)
-    mediaQuery.addEventListener('change', listener)
-    return () => mediaQuery.removeEventListener('change', listener)
-  }, [])
-  return matches
-}
+import { usePrefersReducedMotion } from '../utils/useReducedMotion'
 
 export default function Arsenal() {
   const shouldReduceMotion = usePrefersReducedMotion()
@@ -21,12 +8,12 @@ export default function Arsenal() {
   return (
     <section
       id="arsenal"
-      className="min-h-screen w-full flex items-center justify-center py-20 px-4 sm:px-6 lg:px-8 relative bg-[#0a0a0a] border-b border-[#FFB000]/15"
+      className="min-h-screen w-full flex items-center justify-center py-20 px-4 sm:px-6 lg:px-8 relative bg-[#0a0a0a] border-b border-[#FFB000]/15 scroll-mt-16 sm:scroll-mt-24"
     >
       <div className="max-w-6xl w-full">
         {/* Section Header */}
         <div className="mb-10 border-b border-[#FFB000]/25 pb-4">
-          <div className="flex items-center space-x-2 font-mono text-xs text-[#8a8a8a] mb-2">
+          <div className="flex items-center space-x-2 font-mono text-xs text-[#a3a3a3] mb-2">
             <span className="text-[#FFB000]">MODULE://{arsenalHeader.moduleIndex}</span>
             <span>[{arsenalHeader.tag}]</span>
           </div>
@@ -35,7 +22,7 @@ export default function Arsenal() {
             {arsenalHeader.title}
           </h2>
 
-          <p className="mt-2 text-sm sm:text-base text-[#8a8a8a] font-sans max-w-2xl">
+          <p className="mt-2 text-sm sm:text-base text-[#a3a3a3] font-sans max-w-2xl">
             {arsenalHeader.subtitle}
           </p>
         </div>
@@ -67,7 +54,7 @@ export default function Arsenal() {
                       SLOT://{category.name}
                     </span>
                   </div>
-                  <span className="text-[#8a8a8a] text-[11px] font-semibold">
+                  <span className="text-[#a3a3a3] text-[11px] font-semibold">
                     [{String(category.skills.length).padStart(2, '0')} UNITS]
                   </span>
                 </div>
@@ -95,7 +82,7 @@ export default function Arsenal() {
                         </div>
 
                         {/* Status / Level text */}
-                        <span className="font-mono text-xs text-[#8a8a8a]">
+                        <span className="font-mono text-xs text-[#a3a3a3]">
                           {isLearning ? (
                             <span className="text-[#FFB000] font-semibold text-[11px] flex items-center space-x-1">
                               <span className="w-1.5 h-1.5 rounded-full bg-[#FFB000] animate-pulse" />
@@ -116,7 +103,7 @@ export default function Arsenal() {
                               <span className="cursor-blink">▶</span>
                               <span>LOADING MODEL WEIGHTS...</span>
                             </span>
-                            <span className="text-[#8a8a8a] text-[10px] font-mono">
+                            <span className="text-[#a3a3a3] text-[10px] font-mono">
                               STANDBY
                             </span>
                           </div>

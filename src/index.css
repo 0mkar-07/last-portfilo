@@ -5,7 +5,7 @@
   --color-terminal-panel: #111111;
   --color-terminal-border: rgba(255, 176, 0, 0.25);
   --color-terminal-text: #e5e5e5;
-  --color-terminal-muted: #8a8a8a;
+  --color-terminal-muted: #a3a3a3;
   --color-amber-primary: #FFB000;
   --color-danger-red: #ff3333;
 
@@ -15,6 +15,10 @@
 
 :root {
   color-scheme: dark;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
@@ -27,7 +31,14 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* CRT Scanline Overlay */
+/* Global Keyboard Focus Styles */
+a:focus-visible,
+button:focus-visible {
+  outline: none !important;
+  box-shadow: 0 0 0 2px #0a0a0a, 0 0 0 4px #FFB000 !important;
+}
+
+/* CRT Scanline Overlay - Subtle, High-Legibility */
 .crt-scanlines {
   position: fixed;
   inset: 0;
@@ -35,10 +46,10 @@ body {
   z-index: 9999;
   background: linear-gradient(
     rgba(18, 16, 16, 0) 50%, 
-    rgba(0, 0, 0, 0.25) 50%
+    rgba(0, 0, 0, 0.2) 50%
   );
   background-size: 100% 4px;
-  opacity: 0.65;
+  opacity: 0.35;
 }
 
 .crt-scanlines::before {
@@ -46,7 +57,7 @@ body {
   display: block;
   position: absolute;
   top: 0; left: 0; bottom: 0; right: 0;
-  background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.2) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.02), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.02));
+  background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.15) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.015), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.015));
   z-index: 2;
   background-size: 100% 3px, 6px 100%;
   pointer-events: none;
@@ -58,7 +69,7 @@ body {
   inset: 0;
   pointer-events: none;
   z-index: 9998;
-  background: radial-gradient(circle at center, transparent 65%, rgba(0, 0, 0, 0.6) 100%);
+  background: radial-gradient(circle at center, transparent 70%, rgba(0, 0, 0, 0.5) 100%);
 }
 
 /* Blinking Cursor */
@@ -116,7 +127,7 @@ body {
 
   .crt-scanlines,
   .crt-vignette {
-    opacity: 0.2 !important;
+    opacity: 0.15 !important;
   }
 
   * {

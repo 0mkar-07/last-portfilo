@@ -98,7 +98,7 @@ export default function BootSequence({ onComplete }) {
 
   // Render text-based progress bar: [####------]
   const renderProgressBar = (pct) => {
-    const totalBlocks = 12
+    const totalBlocks = 10
     const filled = Math.round((pct / 100) * totalBlocks)
     const empty = totalBlocks - filled
     return `[${'#'.repeat(filled)}${'-'.repeat(empty)}] ${pct}%`
@@ -112,12 +112,12 @@ export default function BootSequence({ onComplete }) {
         exit={{ opacity: 0 }}
         transition={{ duration: 0.45, ease: 'easeOut' }}
         onClick={handleDismiss}
-        className="fixed inset-0 z-50 bg-[#0a0a0a] text-[#e5e5e5] flex flex-col justify-between p-6 sm:p-10 font-mono select-none cursor-pointer"
+        className="fixed inset-0 z-50 bg-[#0a0a0a] text-[#e5e5e5] flex flex-col justify-between p-4 sm:p-10 font-mono select-none cursor-pointer overflow-hidden"
         role="dialog"
         aria-label="System Boot Sequence"
       >
         {/* Top Telemetry Header */}
-        <div className="flex items-center justify-between border-b border-[#FFB000]/25 pb-4 text-xs text-[#8a8a8a]">
+        <div className="flex items-center justify-between border-b border-[#FFB000]/25 pb-4 text-xs text-[#a3a3a3]">
           <div className="flex items-center space-x-2">
             <span className="w-2 h-2 rounded-full bg-[#FFB000] animate-ping" />
             <span className="text-[#FFB000] font-bold">{bootConfig.systemTitle}</span>
@@ -138,7 +138,7 @@ export default function BootSequence({ onComplete }) {
         </div>
 
         {/* Center Boot Terminal Log */}
-        <div className="max-w-2xl w-full mx-auto my-auto space-y-3.5 text-xs sm:text-sm md:text-base">
+        <div className="max-w-2xl w-full mx-auto my-auto space-y-3.5 text-xs sm:text-sm md:text-base break-words">
           {bootConfig.bootLines.slice(0, currentLineIndex + 1).map((line, idx) => {
             const isLast = idx === currentLineIndex
             const isProgressLine = idx === 4
@@ -146,7 +146,7 @@ export default function BootSequence({ onComplete }) {
             return (
               <div
                 key={idx}
-                className={`flex items-center space-x-2 ${
+                className={`flex items-center space-x-2 flex-wrap ${
                   idx === 3
                     ? 'text-[#FFB000] font-bold text-sm sm:text-lg'
                     : idx === 5
@@ -168,7 +168,7 @@ export default function BootSequence({ onComplete }) {
         </div>
 
         {/* Bottom Helper Bar */}
-        <div className="border-t border-[#FFB000]/20 pt-4 flex flex-col sm:flex-row items-center justify-between text-[11px] text-[#8a8a8a]">
+        <div className="border-t border-[#FFB000]/20 pt-4 flex flex-col sm:flex-row items-center justify-between text-[11px] text-[#a3a3a3] gap-1 text-center sm:text-left">
           <span>INIT_SEQUENCE // BOOT_LOADER</span>
           <span className="text-[#FFB000]">PRESS ANY KEY TO BYPASS PROTOCOL</span>
         </div>

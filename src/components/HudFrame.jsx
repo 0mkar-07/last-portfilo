@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 
 const MODULES = [
   { id: 'identity', label: 'IDENTITY', index: '01' },
@@ -12,11 +12,13 @@ export default function HudFrame({ children }) {
   const [activeSection, setActiveSection] = useState('identity')
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [uptimeSeconds, setUptimeSeconds] = useState(1230492) // Initial survival epoch ticks
+  const hamburgerButtonRef = useRef(null)
+  const closeButtonRef = useRef(null)
 
   // Live ticking uptime counter
   useEffect(() => {
     const timer = setInterval(() => {
-      setUptimeSeconds(prev => prev + 1)
+      setUptimeSeconds((prev) => prev + 1)
     }, 1000)
     return () => clearInterval(timer)
   }, [])
@@ -29,6 +31,29 @@ export default function HudFrame({ children }) {
     const seconds = totalSeconds % 60
     return `${days}d ${String(hours).padStart(2, '0')}h ${String(minutes).padStart(2, '0')}m ${String(seconds).padStart(2, '0')}s`
   }
+
+  // Handle Escape key and body scroll lock for mobile menu
+  useEffect(() => {
+    if (!mobileMenuOpen) return
+
+    const originalOverflow = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') {
+        setMobileMenuOpen(false)
+        hamburgerButtonRef.current?.focus()
+      }
+    }
+
+    window.addEventListener('keydown', handleKeyDown)
+    closeButtonRef.current?.focus()
+
+    return () => {
+      document.body.style.overflow = originalOverflow
+      window.removeEventListener('keydown', handleKeyDown)
+    }
+  }, [mobileMenuOpen])
 
   // IntersectionObserver for active section highlighting
   useEffect(() => {
@@ -66,8 +91,8 @@ export default function HudFrame({ children }) {
 
   return (
     <div className="relative min-h-screen bg-[#0a0a0a] text-[#e5e5e5] font-sans selection:bg-[#FFB000] selection:text-[#0a0a0a]">
-      {/* Corner Bracket Decorations (HUD Frame) */}
-      <div className="fixed inset-0 pointer-events-none z-40 p-2 sm:p-4 md:p-6" aria-hidden="true">
+      {/* Corner Bracket Decorations (HUD Frame - hidden on mobile so it never obscures UI buttons) */}
+      <div className="fixed inset-0 pointer-events-none z-40 p-2 sm:p-4 md:p-6 hidden sm:block" aria-hidden="true">
         {/* Top-Left */}
         <div className="absolute top-2 left-2 sm:top-4 sm:left-4 md:top-6 md:left-6 w-5 h-5 sm:w-8 sm:h-8 border-t-2 border-l-2 border-[#FFB000]/60" />
         {/* Top-Right */}
@@ -79,7 +104,7 @@ export default function HudFrame({ children }) {
       </div>
 
       {/* Top HUD Status Bar */}
-      <header className="sticky top-0 z-30 w-full bg-[#111111]/90 backdrop-blur-md border-b border-[#FFB000]/25">
+      <header className="sticky top-0 z-30 w-full bg-[#111111]/95 backdrop-blur-md border-b border-[#FFB000]/25">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-14 sm:h-16 flex items-center justify-between font-mono text-xs sm:text-sm">
           {/* Brand & Terminal ID */}
           <div className="flex items-center space-x-3">
@@ -89,15 +114,15 @@ export default function HudFrame({ children }) {
             </span>
             <div className="flex items-center space-x-2">
               <span className="text-[#FFB000] font-bold tracking-wider">SURVIVOR_NET</span>
-              <span className="text-[#8a8a8a] text-[10px] sm:text-xs">v1.0</span>
+              <span className="text-[#a3a3a3] text-[10px] sm:text-xs">v1.0</span>
             </div>
           </div>
 
           {/* Telemetry (Uptime & Degraded Network status) */}
           <div className="flex items-center space-x-3 sm:space-x-6">
             {/* Live Uptime (hidden on narrow screens to prevent overflow) */}
-            <div className="hidden md:flex items-center space-x-1.5 text-[#8a8a8a]">
-              <span className="text-[#FFB000]/80">UPTIME:</span>
+            <div className="hidden md:flex items-center space-x-1.5 text-[#a3a3a3]">
+              <span className="text-[#FFB000]">UPTIME:</span>
               <span className="text-[#e5e5e5] font-mono">{formatUptime(uptimeSeconds)}</span>
             </div>
 
@@ -126,9 +151,10 @@ export default function HudFrame({ children }) {
 
             {/* Mobile Hamburger Toggle Button (min 44px tap target) */}
             <button
+              ref={hamburgerButtonRef}
               type="button"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="lg:hidden min-w-[44px] min-h-[44px] flex items-center justify-center p-2 text-[#FFB000] hover:text-white border border-[#FFB000]/30 hover:border-[#FFB000] rounded bg-[#0a0a0a] transition-colors focus:outline-none focus:ring-1 focus:ring-[#FFB000]"
+              className="lg:hidden min-w-[44px] min-h-[44px] flex items-center justify-center p-2 text-[#FFB000] hover:text-white border border-[#FFB000]/30 hover:border-[#FFB000] rounded bg-[#0a0a0a] transition-colors"
               aria-label={mobileMenuOpen ? 'Close terminal navigation' : 'Open terminal navigation'}
               aria-expanded={mobileMenuOpen}
             >
@@ -143,26 +169,26 @@ export default function HudFrame({ children }) {
           </div>
         </div>
 
-        {/* Desktop Navigation Bar */}
+        {/* Desktop Navigation Bar (>=44px buttons) */}
         <nav
           aria-label="Terminal Modules"
           className="hidden lg:block border-t border-[#FFB000]/15 bg-[#0e0e0e]/95"
         >
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <ul className="flex items-center space-x-1 font-mono text-xs py-1.5">
+            <ul className="flex items-center space-x-1 font-mono text-xs py-1">
               {MODULES.map((mod) => {
                 const isActive = activeSection === mod.id
                 return (
                   <li key={mod.id}>
                     <button
                       onClick={() => handleNavClick(mod.id)}
-                      className={`min-h-[40px] px-3.5 py-1.5 rounded flex items-center space-x-2 transition-all cursor-pointer ${
+                      className={`min-h-[44px] px-3.5 py-2 rounded flex items-center space-x-2 transition-all cursor-pointer ${
                         isActive
                           ? 'bg-[#FFB000]/15 text-[#FFB000] border border-[#FFB000]/50 shadow-[0_0_10px_rgba(255,176,0,0.2)]'
-                          : 'text-[#8a8a8a] hover:text-[#e5e5e5] hover:bg-[#1a1a1a] border border-transparent'
+                          : 'text-[#a3a3a3] hover:text-[#e5e5e5] hover:bg-[#1a1a1a] border border-transparent'
                       }`}
                     >
-                      <span className={isActive ? 'text-[#FFB000]' : 'text-[#8a8a8a]/70'}>
+                      <span className={isActive ? 'text-[#FFB000]' : 'text-[#a3a3a3]'}>
                         [{mod.index}]
                       </span>
                       <span className="font-semibold tracking-wider">{mod.label}</span>
@@ -187,10 +213,14 @@ export default function HudFrame({ children }) {
           <div className="flex items-center justify-between border-b border-[#FFB000]/25 pb-4">
             <div className="flex items-center space-x-2 font-mono">
               <span className="text-[#FFB000] font-bold">TERMINAL_NAV</span>
-              <span className="text-[#8a8a8a] text-xs">[INDEX_MAP]</span>
+              <span className="text-[#a3a3a3] text-xs">[INDEX_MAP]</span>
             </div>
             <button
-              onClick={() => setMobileMenuOpen(false)}
+              ref={closeButtonRef}
+              onClick={() => {
+                setMobileMenuOpen(false)
+                hamburgerButtonRef.current?.focus()
+              }}
               className="min-w-[44px] min-h-[44px] flex items-center justify-center text-[#FFB000] hover:text-white border border-[#FFB000]/40 rounded p-2"
               aria-label="Close menu"
             >
@@ -228,7 +258,7 @@ export default function HudFrame({ children }) {
           </nav>
 
           {/* Mobile Telemetry Footer */}
-          <div className="border-t border-[#FFB000]/20 pt-4 font-mono text-xs text-[#8a8a8a] space-y-1">
+          <div className="border-t border-[#FFB000]/20 pt-4 font-mono text-xs text-[#a3a3a3] space-y-1">
             <div className="flex justify-between">
               <span>SYS_UPTIME:</span>
               <span className="text-[#e5e5e5]">{formatUptime(uptimeSeconds)}</span>
@@ -247,7 +277,7 @@ export default function HudFrame({ children }) {
       </main>
 
       {/* Terminal Footer Status Bar */}
-      <footer className="relative z-10 border-t border-[#FFB000]/20 bg-[#0c0c0c] text-[#8a8a8a] font-mono text-xs py-4 px-4 sm:px-8">
+      <footer className="relative z-10 border-t border-[#FFB000]/20 bg-[#0c0c0c] text-[#a3a3a3] font-mono text-xs py-4 px-4 sm:px-8">
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2 text-center sm:text-left">
           <div>
             <span className="text-[#FFB000]">TERMINAL://</span> DOOMSDAY_SURVIVOR_NET // NODE_404

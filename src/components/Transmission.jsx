@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import { motion } from 'framer-motion'
 import { contactData, transmissionHeader } from '../data/links'
 
 export default function Transmission() {
@@ -44,12 +43,12 @@ export default function Transmission() {
   return (
     <section
       id="transmission"
-      className="min-h-screen w-full flex items-center justify-center py-20 px-4 sm:px-6 lg:px-8 relative bg-[#0a0a0a] border-b border-[#FFB000]/15"
+      className="min-h-screen w-full flex items-center justify-center py-20 px-4 sm:px-6 lg:px-8 relative bg-[#0a0a0a] border-b border-[#FFB000]/15 scroll-mt-16 sm:scroll-mt-24"
     >
       <div className="max-w-5xl w-full">
         {/* Section Header */}
         <div className="mb-10 border-b border-[#FFB000]/25 pb-4">
-          <div className="flex items-center space-x-2 font-mono text-xs text-[#8a8a8a] mb-2">
+          <div className="flex items-center space-x-2 font-mono text-xs text-[#a3a3a3] mb-2">
             <span className="text-[#FFB000]">MODULE://{transmissionHeader.moduleIndex}</span>
             <span>[{transmissionHeader.tag}]</span>
           </div>
@@ -59,7 +58,7 @@ export default function Transmission() {
           </h2>
 
           {/* In-character atmospheric line */}
-          <div className="mt-3 flex items-center space-x-2 font-mono text-xs sm:text-sm text-[#FFB000]/90 bg-[#111111]/80 px-3.5 py-2 rounded border border-[#FFB000]/20 max-w-xl">
+          <div className="mt-3 flex items-center space-x-2 font-mono text-xs sm:text-sm text-[#FFB000] bg-[#111111]/80 px-3.5 py-2 rounded border border-[#FFB000]/20 max-w-xl">
             <span className="w-2 h-2 rounded-full bg-[#ff3333] animate-pulse" />
             <p>"{transmissionHeader.signalNotice}"</p>
           </div>
@@ -77,12 +76,12 @@ export default function Transmission() {
           <div className="bg-[#0a0a0a] border border-[#FFB000]/25 rounded-md p-4 sm:p-5 relative">
             <div className="flex flex-wrap items-center justify-between gap-2 border-b border-[#FFB000]/15 pb-2.5 mb-3 font-mono text-xs">
               <span className="text-[#FFB000] font-semibold">// PRIMARY_DISPATCH</span>
-              <span className="text-[#8a8a8a] text-[11px]">ENC_PROTOCOL: DIRECT_MAIL</span>
+              <span className="text-[#a3a3a3] text-[11px]">ENC_PROTOCOL: DIRECT_MAIL</span>
             </div>
 
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
               <div>
-                <span className="text-[11px] font-mono text-[#8a8a8a] block">TRANSMISSION TARGET:</span>
+                <span className="text-[11px] font-mono text-[#a3a3a3] block">TRANSMISSION TARGET:</span>
                 <a
                   href={`mailto:${contactData.email}`}
                   className="font-mono text-base sm:text-lg font-bold text-[#e5e5e5] hover:text-[#FFB000] transition-colors break-all"
@@ -118,7 +117,7 @@ export default function Transmission() {
 
           {/* Social Frequency Grid */}
           <div className="space-y-3">
-            <span className="text-xs font-mono text-[#8a8a8a] uppercase block">
+            <span className="text-xs font-mono text-[#a3a3a3] uppercase block">
               // RECOVERED NETWORK CHANNELS:
             </span>
 
@@ -132,7 +131,7 @@ export default function Transmission() {
                   className="min-h-[64px] p-4 bg-[#0a0a0a] border border-[#FFB000]/25 hover:border-[#FFB000] rounded transition-all group flex flex-col justify-between hover:shadow-[0_0_15px_rgba(255,176,0,0.18)]"
                 >
                   <div className="flex items-center justify-between font-mono text-xs mb-2">
-                    <span className="text-[#8a8a8a] text-[10px]">{link.frequency}</span>
+                    <span className="text-[#a3a3a3] text-[10px]">{link.frequency}</span>
                     <span className="text-[#FFB000] text-[10px] flex items-center space-x-1">
                       <span className="w-1.5 h-1.5 rounded-full bg-[#FFB000] animate-pulse" />
                       <span>{link.status}</span>
@@ -144,7 +143,7 @@ export default function Transmission() {
                       <h4 className="font-mono text-sm sm:text-base font-bold text-[#e5e5e5] group-hover:text-[#FFB000] transition-colors glitch-hover">
                         {link.label}
                       </h4>
-                      <span className="font-mono text-xs text-[#8a8a8a]">{link.handle}</span>
+                      <span className="font-mono text-xs text-[#a3a3a3]">{link.handle}</span>
                     </div>
 
                     <span className="text-[#FFB000] font-mono text-lg group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform">
@@ -162,13 +161,13 @@ export default function Transmission() {
               <span>{contactData.closingLine}</span>
               <span className="cursor-blink ml-1">_</span>
             </div>
-            <p className="font-mono text-[11px] text-[#8a8a8a]">
+            <p className="font-mono text-[11px] text-[#a3a3a3]">
               TERMINAL UPLINK REMAINING IN PASSIVE LISTENING MODE
             </p>
           </div>
 
           {/* Minimal Terminal Footer */}
-          <div className="border-t border-[#FFB000]/15 pt-4 flex flex-col sm:flex-row items-center justify-between gap-2 font-mono text-xs text-[#8a8a8a]">
+          <div className="border-t border-[#FFB000]/15 pt-4 flex flex-col sm:flex-row items-center justify-between gap-2 font-mono text-xs text-[#a3a3a3]">
             <div>{contactData.footer.name} // {contactData.footer.year}</div>
             <div className="text-[#FFB000]">{contactData.footer.system}</div>
           </div>

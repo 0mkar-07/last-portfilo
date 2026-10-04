@@ -1,19 +1,7 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { projects, archivesHeader } from '../data/projects'
-
-function usePrefersReducedMotion() {
-  const [matches, setMatches] = useState(false)
-  useEffect(() => {
-    if (typeof window === 'undefined') return
-    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)')
-    setMatches(mediaQuery.matches)
-    const listener = (e) => setMatches(e.matches)
-    mediaQuery.addEventListener('change', listener)
-    return () => mediaQuery.removeEventListener('change', listener)
-  }, [])
-  return matches
-}
+import { usePrefersReducedMotion } from '../utils/useReducedMotion'
 
 export default function Archives() {
   const shouldReduceMotion = usePrefersReducedMotion()
@@ -26,12 +14,12 @@ export default function Archives() {
   return (
     <section
       id="archives"
-      className="min-h-screen w-full flex items-center justify-center py-20 px-4 sm:px-6 lg:px-8 relative bg-[#0a0a0a] border-b border-[#FFB000]/15"
+      className="min-h-screen w-full flex items-center justify-center py-20 px-4 sm:px-6 lg:px-8 relative bg-[#0a0a0a] border-b border-[#FFB000]/15 scroll-mt-16 sm:scroll-mt-24"
     >
       <div className="max-w-6xl w-full">
         {/* Section Header */}
         <div className="mb-10 border-b border-[#FFB000]/25 pb-4">
-          <div className="flex items-center space-x-2 font-mono text-xs text-[#8a8a8a] mb-2">
+          <div className="flex items-center space-x-2 font-mono text-xs text-[#a3a3a3] mb-2">
             <span className="text-[#FFB000]">MODULE://{archivesHeader.moduleIndex}</span>
             <span>[{archivesHeader.tag}]</span>
           </div>
@@ -40,7 +28,7 @@ export default function Archives() {
             {archivesHeader.title}
           </h2>
 
-          <p className="mt-2 text-sm sm:text-base text-[#8a8a8a] font-sans max-w-2xl">
+          <p className="mt-2 text-sm sm:text-base text-[#a3a3a3] font-sans max-w-2xl">
             {archivesHeader.subtitle}
           </p>
         </div>
@@ -64,7 +52,7 @@ export default function Archives() {
                 <div>
                   {/* Top Card Telemetry Header */}
                   <div className="flex items-center justify-between font-mono text-xs border-b border-[#FFB000]/15 pb-3 mb-4">
-                    <span className="text-[#8a8a8a]">{project.recordNumber}</span>
+                    <span className="text-[#a3a3a3]">{project.recordNumber}</span>
                     <span className="flex items-center space-x-1.5 px-2 py-0.5 rounded bg-[#0a0a0a] border border-[#FFB000]/25 text-[#FFB000] text-[11px] font-semibold">
                       <span className="w-1.5 h-1.5 rounded-full bg-[#FFB000] animate-pulse" />
                       <span>{project.status}</span>
@@ -72,12 +60,12 @@ export default function Archives() {
                   </div>
 
                   {/* Project Name */}
-                  <h3 className="text-xl sm:text-2xl font-mono font-bold text-[#e5e5e5] mb-2 tracking-tight">
+                  <h3 className="text-xl sm:text-2xl font-mono font-bold text-[#e5e5e5] mb-2 tracking-tight break-words">
                     {project.name}
                   </h3>
 
                   {/* Project Summary */}
-                  <p className="font-sans text-sm text-[#e5e5e5]/85 leading-relaxed mb-5">
+                  <p className="font-sans text-sm text-[#e5e5e5] leading-relaxed mb-5 break-words">
                     {project.summary}
                   </p>
 
@@ -111,7 +99,7 @@ export default function Archives() {
                       src={project.image}
                       alt={`Terminal screen capture of ${project.name}`}
                       loading="lazy"
-                      className="w-full h-auto aspect-16/10 object-cover object-top transition-transform duration-300 group-hover:scale-[1.02]"
+                      className="w-full h-auto aspect-[16/10] object-cover object-top transition-transform duration-300 group-hover:scale-[1.02]"
                     />
                   </div>
                 </div>
@@ -160,10 +148,10 @@ export default function Archives() {
                       >
                         <div className="pt-5 border-t border-[#FFB000]/20 mt-4 space-y-4">
                           <div>
-                            <span className="text-[11px] font-mono text-[#8a8a8a] uppercase tracking-wider block mb-1">
+                            <span className="text-[11px] font-mono text-[#a3a3a3] uppercase tracking-wider block mb-1">
                               // ARCHIVE DOSSIER SPECIFICATION:
                             </span>
-                            <p className="font-sans text-xs sm:text-sm text-[#e5e5e5]/90 leading-relaxed">
+                            <p className="font-sans text-xs sm:text-sm text-[#e5e5e5] leading-relaxed break-words">
                               {project.description}
                             </p>
                           </div>
